@@ -1,9 +1,9 @@
 # Homework repository
 
 ## Install dependencies
-```npm install```
+```npm run install```
 ## Development Mode 
-```npm serve```
+```npm run serve```
 
 ## Build production 
-```npm build```
+```npm run build```

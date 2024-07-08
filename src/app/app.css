@@ -1,0 +1,38 @@
+
+#root {
+    display: flex;
+    flex-direction: column;
+    max-width: 1017px;
+    min-height: 100vh;
+    margin: 0 auto;
+}
+
+main {
+    flex-grow: 1;
+}
+
+.table-header {
+    color: #6B7280;
+    font-weight: 600;
+}
+
+.status {
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.status.completed {
+    color: #03543F;
+    background-color: #DEF7EC;
+}
+
+.status.canceled {
+    color: #9B1C1C;
+    background-color: #FDE8E8;
+}
+
+.status.inprogress {
+    color: #5521B5;
+    background-color: #EDEBFE;
+}

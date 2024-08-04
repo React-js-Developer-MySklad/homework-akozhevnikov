@@ -53,10 +53,15 @@ class ContragentEditForm {
             this.#kppElement.value,
         )
 
+        if (!newAgent.name) {
+            alert('Не заполнено наименование контрагента');
+            return;
+        }
+
         if (this.#saveHandler) {
             this.#saveHandler(newAgent);
         } else {
-            console.error("On save handler is not defined");
+            console.error("save handler is not defined");
         }
 
         this.#modal.hide();

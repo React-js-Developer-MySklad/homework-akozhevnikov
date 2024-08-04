@@ -11,19 +11,3 @@ main {
     flex-grow: 1;
 }
 
-.table-header {
-    color: #6B7280;
-    font-weight: 600;
-}
-
-.data-form tr {
-    cursor: pointer;
-}
-
-.data-form tr:hover {
-    background-color: #f4f4f4;
-}
-
-.data-form tr:active {
-    background-color: #ececec;
-}

@@ -1,4 +1,5 @@
 import html from './table.html'
+import css from './table.css'
 
 class ContragentDataForm {
 

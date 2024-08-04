@@ -1,4 +1,3 @@
-
 class Agent {
     constructor(id, name, inn, address, kpp, status) {
         this.id = id;

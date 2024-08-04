@@ -15,11 +15,9 @@ class ContragentEditForm {
     #saveHandler;
 
     constructor(elementId) {
-        const rootElement = document.getElementById(elementId);
-        rootElement.innerHTML = html;
+        document.getElementById(elementId).innerHTML = html;
 
         this.#modal = new Modal(document.getElementById("modalBody"));
-
         this.#nameElement = document.getElementById("name");
         this.#innElement = document.getElementById("inn");
         this.#addressElement = document.getElementById("address");

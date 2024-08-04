@@ -16,23 +16,14 @@ main {
     font-weight: 600;
 }
 
-.status {
-    padding: 4px 10px;
-    border-radius: 4px;
-    font-weight: 500;
+.data-form tr {
+    cursor: pointer;
 }
 
-.status.completed {
-    color: #03543F;
-    background-color: #DEF7EC;
+.data-form tr:hover {
+    background-color: #f4f4f4;
 }
 
-.status.canceled {
-    color: #9B1C1C;
-    background-color: #FDE8E8;
-}
-
-.status.inprogress {
-    color: #5521B5;
-    background-color: #EDEBFE;
+.data-form tr:active {
+    background-color: #ececec;
 }

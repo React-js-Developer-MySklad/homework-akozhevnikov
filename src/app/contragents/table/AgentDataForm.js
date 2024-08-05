@@ -1,7 +1,7 @@
-import html from './table.html'
-import css from './table.css'
+import html from './component.html'
+import './style.css'
 
-class ContragentDataForm {
+class AgentDataForm {
 
     #rowTemplate = `
             <tr id="dataFormEdit-%5$s" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -88,4 +88,4 @@ class ContragentDataForm {
     }
 }
 
-export default ContragentDataForm;
+export default AgentDataForm;

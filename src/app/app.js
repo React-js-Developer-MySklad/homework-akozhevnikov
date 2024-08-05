@@ -1,7 +1,7 @@
 import html from "./app.html";
 import './app.css'
-import AgentDataForm from './contragents/table/AgentDataForm'
-import AgentEditForm from './contragents/modal/AgentEditForm'
+import AgentDataForm from './agents/table/AgentDataForm'
+import AgentEditForm from './agents/modal/AgentEditForm'
 
 const rootElement = document.getElementById('root');
 rootElement.innerHTML = html;

@@ -5,8 +5,8 @@ import './style.css'
 
 class AgentEditForm {
 
-    #INN_REGEX = /^\d{11}$/;
-    #KPP_REGEX = /^\d{9}$/;
+    static #INN_REGEX = /^\d{11}$/;
+    static #KPP_REGEX = /^\d{9}$/;
 
     #modal;
 

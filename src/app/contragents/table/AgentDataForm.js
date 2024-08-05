@@ -56,7 +56,7 @@ class AgentDataForm {
         let content = '';
 
         agents.forEach(agent => {
-            content += this.#rowTemplate
+            content += AgentDataForm.#ROW_TEMPLATE
                 .replaceAll('%1$s', agent.name)
                 .replaceAll('%2$s', agent.inn)
                 .replaceAll('%3$s', agent.address)

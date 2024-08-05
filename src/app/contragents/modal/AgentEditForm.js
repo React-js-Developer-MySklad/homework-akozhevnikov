@@ -97,14 +97,14 @@ class AgentEditForm {
     }
 
     #validateInn(val) {
-        if (val && !this.#INN_REGEX.test(val)) {
+        if (val && !AgentEditForm.#INN_REGEX.test(val)) {
             this.#markAsError(this.#innElement, );
             return 'ИНН должен состоять из 11 цифр';
         }
     }
 
     #validateKpp(val) {
-        if (val && !this.#KPP_REGEX.test(val)) {
+        if (val && !AgentEditForm.#KPP_REGEX.test(val)) {
             this.#markAsError(this.#kppElement);
             return 'КПП должен состоять из 9 цифр';
         }

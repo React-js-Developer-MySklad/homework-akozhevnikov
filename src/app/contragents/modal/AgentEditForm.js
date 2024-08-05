@@ -10,6 +10,8 @@ class AgentEditForm {
 
     #modal;
 
+    #modalHeaderElement;
+
     #nameElement;
     #innElement;
     #addressElement;
@@ -22,6 +24,7 @@ class AgentEditForm {
         document.getElementById(elementId).innerHTML = html;
 
         this.#modal = new Modal(document.getElementById("modalBody"));
+        this.#modalHeaderElement = document.getElementById('modal-header');
         this.#nameElement = document.getElementById("modal-field-name");
         this.#innElement = document.getElementById("modal-field-inn");
         this.#addressElement = document.getElementById("modal-field-address");
@@ -49,6 +52,12 @@ class AgentEditForm {
         this.#markAsSuccess(this.#innElement);
         this.#markAsSuccess(this.#addressElement);
         this.#markAsSuccess(this.#kppElement);
+
+        if (this.#agent.id) {
+            this.#modalHeaderElement.innerHTML = this.#agent.name;
+        } else {
+            this.#modalHeaderElement.innerHTML = 'Новый контрагент';
+        }
 
         this.#modal.show();
     }

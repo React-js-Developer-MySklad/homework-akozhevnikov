@@ -68,22 +68,10 @@ class AgentDataForm {
 
         agents.forEach(agent => {
             document.getElementById('dataFormRemove-' + agent.id)
-                .addEventListener('click', e => {
-                    if (this.#deleteHandler) {
-                        this.#deleteHandler(agent);
-                    } else {
-                        console.log("delete handler is not defined");
-                    }
-                });
+                .addEventListener('click', e => this.#deleteHandler(agent));
 
             document.getElementById('dataFormEdit-' + agent.id)
-                .addEventListener('dblclick', e => {
-                    if (this.#editHandler) {
-                        this.#editHandler(agent);
-                    } else {
-                        console.log("edit handler is not defined");
-                    }
-                })
+                .addEventListener('dblclick', e => this.#editHandler(agent))
         })
     }
 }

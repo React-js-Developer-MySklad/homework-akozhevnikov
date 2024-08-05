@@ -75,12 +75,7 @@ class AgentEditForm {
             return;
         }
 
-        if (this.#saveHandler) {
-            this.#saveHandler(newAgent);
-        } else {
-            console.error("save handler is not defined");
-        }
-
+        this.#saveHandler(newAgent);
         this.#modal.hide();
     }
 
@@ -107,7 +102,7 @@ class AgentEditForm {
 
     #validateInn(val) {
         if (val && !AgentEditForm.#INN_REGEX.test(val)) {
-            this.#markAsError(this.#innElement, );
+            this.#markAsError(this.#innElement,);
             return 'ИНН должен состоять из 11 цифр';
         }
     }

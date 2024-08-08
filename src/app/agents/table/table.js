@@ -3,32 +3,6 @@ import './table.css'
 
 class Table {
 
-    static #ROW_TEMPLATE = `
-            <tr id="dataFormEdit-%5$s" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    %1$s
-                </th>
-                <td class="px-6 py-4 font-bold text-black">
-                    %2$s
-                </td>
-                <td class="px-6 py-4">
-                    %3$s
-                </td>
-                <td class="px-6 py-4 font-bold text-black">
-                    %4$s
-                </td>
-                <td class="py-4">
-                        <button type="button"
-                            id="dataFormRemove-%5$s"
-                            class="delete-button text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none
-                                focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-1 text-center dark:bg-red-600
-                                dark:hover:bg-red-700 dark:focus:ring-red-800">
-                        Удалить
-                    </button>
-                </td>
-            </tr>
-    `;
-
     #tbody;
 
     #deleteHandler;
@@ -51,20 +25,36 @@ class Table {
         return this;
     }
 
+    #renderRow(agent) {
+        return `
+             <tr id="dataFormEdit-${agent.id}" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    ${agent.name}
+                </th>
+                <td class="px-6 py-4 font-bold text-black">
+                    ${agent.inn}
+                </td>
+                <td class="px-6 py-4">
+                    ${agent.address}
+                </td>
+                <td class="px-6 py-4 font-bold text-black">
+                    ${agent.kpp}
+                </td>
+                <td class="py-4">
+                        <button type="button"
+                            id="dataFormRemove-${agent.id}"
+                            class="delete-button text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none
+                                focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-1 text-center dark:bg-red-600
+                                dark:hover:bg-red-700 dark:focus:ring-red-800">
+                        Удалить
+                    </button>
+                </td>
+            </tr>`;
+    }
+
     update(agents) {
 
-        let content = '';
-
-        agents.forEach(agent => {
-            content += Table.#ROW_TEMPLATE
-                .replaceAll('%1$s', agent.name)
-                .replaceAll('%2$s', agent.inn)
-                .replaceAll('%3$s', agent.address)
-                .replaceAll('%4$s', agent.kpp)
-                .replaceAll('%5$s', agent.id);
-        });
-
-        this.#tbody.innerHTML = content;
+        this.#tbody.innerHTML = agents.map(this.#renderRow);
 
         agents.forEach(agent => {
             document.getElementById('dataFormRemove-' + agent.id)

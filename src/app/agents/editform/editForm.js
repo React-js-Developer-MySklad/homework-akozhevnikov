@@ -1,9 +1,9 @@
 import {Modal} from "flowbite";
 import Agent from "../Agent";
-import html from "./component.html";
-import './style.css'
+import html from "./editForm.html";
+import './editForm.css'
 
-class AgentEditForm {
+class EditForm {
 
     static #INN_REGEX = /^\d{11}$/;
     static #KPP_REGEX = /^\d{9}$/;
@@ -101,14 +101,14 @@ class AgentEditForm {
     }
 
     #validateInn(val) {
-        if (val && !AgentEditForm.#INN_REGEX.test(val)) {
+        if (val && !EditForm.#INN_REGEX.test(val)) {
             this.#markAsError(this.#innElement,);
             return 'ИНН должен состоять из 11 цифр';
         }
     }
 
     #validateKpp(val) {
-        if (val && !AgentEditForm.#KPP_REGEX.test(val)) {
+        if (val && !EditForm.#KPP_REGEX.test(val)) {
             this.#markAsError(this.#kppElement);
             return 'КПП должен состоять из 9 цифр';
         }
@@ -139,4 +139,4 @@ class AgentEditForm {
     }
 }
 
-export default AgentEditForm;
+export default EditForm;

@@ -1,7 +1,7 @@
-import html from './component.html'
-import './style.css'
+import html from './table.html'
+import './table.css'
 
-class AgentDataForm {
+class Table {
 
     static #ROW_TEMPLATE = `
             <tr id="dataFormEdit-%5$s" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -56,7 +56,7 @@ class AgentDataForm {
         let content = '';
 
         agents.forEach(agent => {
-            content += AgentDataForm.#ROW_TEMPLATE
+            content += Table.#ROW_TEMPLATE
                 .replaceAll('%1$s', agent.name)
                 .replaceAll('%2$s', agent.inn)
                 .replaceAll('%3$s', agent.address)
@@ -76,4 +76,4 @@ class AgentDataForm {
     }
 }
 
-export default AgentDataForm;
+export default Table;

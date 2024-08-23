@@ -4,13 +4,9 @@
 
 .validation-error::-webkit-input-placeholder {
     color: red
- }
-
-.validation-error + span {
-    display: block;
 }
 
-.validation-error + span {
+.validation-error .validation-error-message {
     display: block;
 }
 

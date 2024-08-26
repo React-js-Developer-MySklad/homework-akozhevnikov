@@ -1,6 +1,6 @@
 import React, {StrictMode, useCallback, useContext, useState} from "react";
 import {AgentDataForm} from "../dataForm/agentDataForm"
-import {AgentDataCommit, AgentEditForm} from "../editform/agentEditForm"
+import {AgentEditForm} from "../editform/agentEditForm"
 import {Agent} from "../../model/Agent";
 import "./app.css"
 import LogoSvg from '../images/LogoSvg'
@@ -10,17 +10,10 @@ import {AgentContext} from "../context/AgentContext";
 interface DialogState {
     data: Agent
     visible: boolean
-    commit: AgentDataCommit
 }
 
 const emptyNewAgent = (): Agent => {
     return new Agent(null, "", "", "", "")
-}
-
-const dialogClosed: DialogState = {
-    data: {...emptyNewAgent()},
-    visible: false,
-    commit: undefined
 }
 
 export const App: React.FC = () => {
@@ -39,11 +32,7 @@ export const App: React.FC = () => {
         context.get(id).then(agent => {
             setDialogState({
                 data: {...agent},
-                visible: true,
-                commit: (agent: Agent) => {
-                    context.update(agent);
-                    closeDialog();
-                }
+                visible: true
             });
         });
     }, [context]);
@@ -51,11 +40,7 @@ export const App: React.FC = () => {
     const addAgent = useCallback(() => {
         setDialogState({
             data: {...emptyNewAgent()},
-            visible: true,
-            commit: (agent: Agent) => {
-                context.create(agent);
-                closeDialog();
-            }
+            visible: true
         });
     }, [context]);
 
@@ -78,10 +63,9 @@ export const App: React.FC = () => {
                 </button>
             </header>
 
-            <AgentEditForm data={dialogState.data}
-                           visible={dialogState.visible}
-                           onCommit={dialogState.commit}
-                           onClose={closeDialog}/>
+            {dialogState.visible &&
+                <AgentEditForm data={dialogState.data} onSave={saveAgent} onClose={closeDialog}/>
+            }
 
             <main>
                 <AgentDataForm tableData={context.agents} onDelete={deleteAgent} onEdit={editAgent}/>

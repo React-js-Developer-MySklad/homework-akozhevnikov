@@ -12,10 +12,6 @@ interface DialogState {
     visible: boolean
 }
 
-const emptyNewAgent = (): Agent => {
-    return new Agent(null, "", "", "", "")
-}
-
 export const App: React.FC = () => {
 
     const context = useContext(AgentContext);
@@ -26,7 +22,7 @@ export const App: React.FC = () => {
 
     const addAgent = useCallback(() => {
         setDialogState({
-            data: {...emptyNewAgent()},
+            data: new Agent(null, "", "", "", ""),
             visible: true
         });
     }, [context]);
@@ -43,7 +39,7 @@ export const App: React.FC = () => {
     const editAgent = useCallback((id: string) => {
         context.get(id).then(agent => {
             setDialogState({
-                data: {...agent},
+                data: agent,
                 visible: true
             });
         });

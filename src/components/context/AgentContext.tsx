@@ -5,10 +5,9 @@ import {v4} from "uuid";
 
 interface IAgentContext {
     agents: Agent[];
-    getAll: () => Promise<Agent[]>
     get: (id: string) => Promise<Agent>
-    create: (agent: Agent) => void;
-    update: (agent: Agent) => void;
+    getAll: () => Promise<Agent[]>
+    save: (agent: Agent) => void;
     remove: (id: string) => void;
 }
 
@@ -26,27 +25,27 @@ const AgentProvider: React.FC<{ children: ReactNode }> = ({children}) => {
         getAll().then(value => setAgents(value));
     }, []);
 
-    const getAll = async () => {
-        return api.get<Agent[]>('agents')
-            .then(response => response.data);
-    };
-
     const get = async (id: string) => {
         return api.get<Agent>(`agents/${id}`)
             .then(response => response.data);
     };
 
-    const create = async (agent: Agent) => {
-        agent.id = v4();
-        api.post<Agent>(`agents`, agent)
-            .then(response => setAgents([...agents, response.data]));
+    const getAll = async () => {
+        return api.get<Agent[]>('agents')
+            .then(response => response.data);
     };
 
-    const update = async (agent: Agent) => {
-        await api.put(`agents/${agent.id}`, agent);
-        setAgents(agents.map(element => element.id === agent.id
-            ? {...agent}
-            : element));
+    const save = async (agent: Agent) => {
+        if (agent.id) {
+            await api.put(`agents/${agent.id}`, agent);
+            setAgents(agents.map(element => element.id === agent.id
+                ? {...agent}
+                : element));
+        } else {
+            agent.id = v4();
+            api.post<Agent>(`agents`, agent)
+                .then(response => setAgents([...agents, response.data]));
+        }
     };
 
     const remove = async (id: string) => {
@@ -57,10 +56,9 @@ const AgentProvider: React.FC<{ children: ReactNode }> = ({children}) => {
     return (
         <AgentContext.Provider value={{
             agents,
-            getAll: getAll,
             get: get,
-            create: create,
-            update: update,
+            getAll: getAll,
+            save: save,
             remove: remove
         }}>
             {children}

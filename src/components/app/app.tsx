@@ -20,9 +20,21 @@ export const App: React.FC = () => {
 
     const context = useContext(AgentContext);
 
-    const [dialogState, setDialogState] = useState<DialogState>(dialogClosed);
+    const [dialogState, setDialogState] = useState<DialogState>({data: null, visible: false});
 
-    const closeDialog = useCallback(() => setDialogState(dialogClosed), []);
+    const closeDialog = useCallback(() => setDialogState({data: null, visible: false}), []);
+
+    const addAgent = useCallback(() => {
+        setDialogState({
+            data: {...emptyNewAgent()},
+            visible: true
+        });
+    }, [context]);
+
+    const saveAgent = useCallback((agent: Agent) => {
+        context.save(agent);
+        closeDialog();
+    }, [context])
 
     const deleteAgent = useCallback((id: string) => {
         context.remove(id);
@@ -37,12 +49,6 @@ export const App: React.FC = () => {
         });
     }, [context]);
 
-    const addAgent = useCallback(() => {
-        setDialogState({
-            data: {...emptyNewAgent()},
-            visible: true
-        });
-    }, [context]);
 
     return (
         <StrictMode>

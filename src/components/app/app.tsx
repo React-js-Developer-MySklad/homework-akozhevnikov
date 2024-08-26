@@ -123,7 +123,6 @@ export const App: React.FC = () => {
                 <AgentEditForm data={dialogState.data} onSave={saveAgent} onClose={closeDialog}/>
             }
 
-
             <main>
                 <AgentDataForm tableData={agents} onDelete={deleteAgent} onEdit={editAgent}/>
             </main>

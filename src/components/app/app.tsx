@@ -16,11 +16,6 @@ const emptyNewAgent = (): Agent => {
     return new Agent(null, "", "", "", "")
 }
 
-const dialogClosed: DialogState = {
-    data: {...emptyNewAgent()},
-    visible: false
-}
-
 export const App: React.FC = () => {
 
     const [agents, setAgents] = useState<Agent[]>([
@@ -61,18 +56,23 @@ export const App: React.FC = () => {
         ),
     ]);
 
-    const [dialogState, setDialogState] = useState<DialogState>(dialogClosed);
+    const [dialogState, setDialogState] = useState<DialogState>({data: null, visible: false});
 
-    const closeDialog = useCallback(() => setDialogState(dialogClosed), []);
+    const closeDialog = useCallback(() => {
+        setDialogState({
+            data: null,
+            visible: false
+        })
+    }, []);
 
-    const deleteAgent = useCallback((id: string) => {
-        const index = agents.findIndex(agent => agent.id === id);
-        if (index !== -1) {
-            setAgents(agents.toSpliced(index, 1));
-        }
+    const addAgent = useCallback(() => {
+        setDialogState({
+            data: {...emptyNewAgent()},
+            visible: true
+        });
     }, [agents]);
 
-    const saveDialog = useCallback((agent: Agent) => {
+    const saveAgent = useCallback((agent: Agent) => {
         if (agent.id) {
             setAgents(agents.map(element => element.id === agent.id
                 ? {...agent}
@@ -93,11 +93,11 @@ export const App: React.FC = () => {
         });
     }, [agents]);
 
-    const addAgent = useCallback(() => {
-        setDialogState({
-            data: {...emptyNewAgent()},
-            visible: true
-        });
+    const deleteAgent = useCallback((id: string) => {
+        const index = agents.findIndex(agent => agent.id === id);
+        if (index !== -1) {
+            setAgents(agents.toSpliced(index, 1));
+        }
     }, [agents]);
 
     return (
@@ -120,7 +120,7 @@ export const App: React.FC = () => {
             </header>
 
             {dialogState.visible &&
-                <AgentEditForm data={dialogState.data} onSave={saveDialog} onClose={closeDialog}/>
+                <AgentEditForm data={dialogState.data} onSave={saveAgent} onClose={closeDialog}/>
             }
 
 

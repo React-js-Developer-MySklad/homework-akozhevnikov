@@ -1,11 +1,11 @@
-import React, {StrictMode, useCallback, useState} from "react";
+import React, {StrictMode, useCallback, useContext, useState} from "react";
 import {AgentDataForm} from "../dataForm/agentDataForm"
 import {AgentDataCommit, AgentEditForm} from "../editform/agentEditForm"
 import {Agent} from "../../model/Agent";
-import {v4} from "uuid";
 import "./app.css"
 import LogoSvg from '../images/LogoSvg'
 import AddSvg from '../images/AddSvg'
+import {AgentContext} from "../context/AgentContext";
 
 interface DialogState {
     data: Agent
@@ -25,80 +25,39 @@ const dialogClosed: DialogState = {
 
 export const App: React.FC = () => {
 
-    const [agents, setAgents] = useState<Agent[]>([
-        new Agent(
-            '933998d0-04d3-4706-bb8f-f622838cd1cd',
-            "ИП Иванов иван Иванович",
-            "53219874521",
-            "г Москва, ул Арбат, д 12, кв 34",
-            "504672913"
-        ),
-        new Agent(
-            '500ad1a8-6e2c-4e4e-8931-6e7b2c4098da',
-            "ООО \"ТехноСфера\"",
-            "60438729105",
-            "г Санкт-Петербург, пр-кт Невский, д 25, кв 56",
-            "236748105"
-        ),
-        new Agent(
-            '6749be47-345d-4fec-ae15-3abf0c49f24e ',
-            "ЗАО \"РосАгро\"",
-            "78051234092",
-            "г Новосибирск, ул Красный проспект, д 78, кв 90",
-            "193846527"
-        ),
-        new Agent(
-            'db6bc2fd-19cc-4573-bb52-8d9062ba5c48',
-            "ООО \"ГлобалТрейд\"",
-            "29106452837",
-            "г Екатеринбург, ул Ленина, д 15, кв 120",
-            "485720193"
-        ),
-        new Agent(
-            'f14430a1-c154-4457-a82d-602efbbe5186',
-            "ООО \"ЭкоТех\"",
-            "29106452837",
-            "г Казань, ул Кремлевская, д 3, кв 7",
-            "672891054"
-        ),
-    ]);
+    const context = useContext(AgentContext);
 
     const [dialogState, setDialogState] = useState<DialogState>(dialogClosed);
 
     const closeDialog = useCallback(() => setDialogState(dialogClosed), []);
 
     const deleteAgent = useCallback((id: string) => {
-        const index = agents.findIndex(agent => agent.id === id);
-        if (index !== -1) {
-            setAgents(agents.toSpliced(index, 1));
-        }
-    }, [agents]);
+        context.remove(id);
+    }, [context]);
 
     const editAgent = useCallback((id: string) => {
-        let agent = agents.find(value => value.id === id);
-        setDialogState({
-            data: {...agent},
-            visible: true,
-            commit: (agent: Agent) => {
-                setAgents(agents.map(element => element.id === id
-                    ? {...agent}
-                    : element));
-                closeDialog();
-            }
+        context.get(id).then(agent => {
+            setDialogState({
+                data: {...agent},
+                visible: true,
+                commit: (agent: Agent) => {
+                    context.update(agent);
+                    closeDialog();
+                }
+            });
         });
-    }, [agents]);
+    }, [context]);
 
     const addAgent = useCallback(() => {
         setDialogState({
             data: {...emptyNewAgent()},
             visible: true,
             commit: (agent: Agent) => {
-                agent.id = v4();
-                setAgents([...agents, agent]);
+                context.create(agent);
                 closeDialog();
             }
         });
-    }, [agents]);
+    }, [context]);
 
     return (
         <StrictMode>
@@ -125,7 +84,7 @@ export const App: React.FC = () => {
                            onClose={closeDialog}/>
 
             <main>
-                <AgentDataForm tableData={agents} onDelete={deleteAgent} onEdit={editAgent}/>
+                <AgentDataForm tableData={context.agents} onDelete={deleteAgent} onEdit={editAgent}/>
             </main>
 
             <footer

@@ -119,10 +119,10 @@ export const App: React.FC = () => {
                 </button>
             </header>
 
-            <AgentEditForm data={dialogState.data}
-                           visible={dialogState.visible}
-                           onSave={saveDialog}
-                           onClose={closeDialog}/>
+            {dialogState.visible &&
+                <AgentEditForm data={dialogState.data} onSave={saveDialog} onClose={closeDialog}/>
+            }
+
 
             <main>
                 <AgentDataForm tableData={agents} onDelete={deleteAgent} onEdit={editAgent}/>

@@ -1,6 +1,6 @@
 import React, {StrictMode, useCallback, useState} from "react";
 import {AgentDataForm} from "../dataForm/agentDataForm"
-import {AgentDataCommit, AgentEditForm} from "../editform/agentEditForm"
+import {AgentEditForm} from "../editform/agentEditForm"
 import {Agent} from "../../model/Agent";
 import {v4} from "uuid";
 import "./app.css"
@@ -10,7 +10,6 @@ import AddSvg from '../images/AddSvg'
 interface DialogState {
     data: Agent
     visible: boolean
-    commit: AgentDataCommit
 }
 
 const emptyNewAgent = (): Agent => {
@@ -19,8 +18,7 @@ const emptyNewAgent = (): Agent => {
 
 const dialogClosed: DialogState = {
     data: {...emptyNewAgent()},
-    visible: false,
-    commit: undefined
+    visible: false
 }
 
 export const App: React.FC = () => {
@@ -74,29 +72,31 @@ export const App: React.FC = () => {
         }
     }, [agents]);
 
+    const saveDialog = useCallback((agent: Agent) => {
+        if (agent.id) {
+            setAgents(agents.map(element => element.id === agent.id
+                ? {...agent}
+                : element));
+            closeDialog();
+        } else {
+            agent.id = v4();
+            setAgents([...agents, agent]);
+            closeDialog();
+        }
+    }, [agents]);
+
     const editAgent = useCallback((id: string) => {
         let agent = agents.find(value => value.id === id);
         setDialogState({
             data: {...agent},
-            visible: true,
-            commit: (agent: Agent) => {
-                setAgents(agents.map(element => element.id === id
-                    ? {...agent}
-                    : element));
-                closeDialog();
-            }
+            visible: true
         });
     }, [agents]);
 
     const addAgent = useCallback(() => {
         setDialogState({
             data: {...emptyNewAgent()},
-            visible: true,
-            commit: (agent: Agent) => {
-                agent.id = v4();
-                setAgents([...agents, agent]);
-                closeDialog();
-            }
+            visible: true
         });
     }, [agents]);
 
@@ -121,7 +121,7 @@ export const App: React.FC = () => {
 
             <AgentEditForm data={dialogState.data}
                            visible={dialogState.visible}
-                           onCommit={dialogState.commit}
+                           onSave={saveDialog}
                            onClose={closeDialog}/>
 
             <main>

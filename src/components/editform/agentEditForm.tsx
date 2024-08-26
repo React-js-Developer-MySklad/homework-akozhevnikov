@@ -2,13 +2,11 @@ import React, {useCallback, useEffect, useState} from "react";
 import {Agent} from "../../model/Agent";
 import {TextInput} from "../input/textField";
 
-export type AgentDataCommit = (agent: Agent) => void;
-
-interface agentDialogProps {
+interface AgentDialogProps {
     visible: boolean,
     data: Agent,
     onClose: () => void,
-    onCommit: AgentDataCommit
+    onSave: (agent: Agent) => void,
 }
 
 interface AgentState {
@@ -19,11 +17,11 @@ interface AgentState {
 const INN_REGEX: RegExp = /^\d{11}$/;
 const KPP_REGEX: RegExp = /^\d{9}$/;
 
-export const AgentEditForm: React.FC<agentDialogProps> = ({
+export const AgentEditForm: React.FC<AgentDialogProps> = ({
                                                               visible,
                                                               data,
                                                               onClose,
-                                                              onCommit
+                                                              onSave
                                                           }) => {
 
     const [agentState, setAgent] = useState<AgentState>({agent: data, errors: new Map()});
@@ -62,11 +60,11 @@ export const AgentEditForm: React.FC<agentDialogProps> = ({
         return !val || val.match(/^ *$/) !== null;
     }
 
-    const handleCommit = useCallback(() => {
+    const save = useCallback(() => {
         const validationError: Map<string, string> = validate(agentState.agent);
 
         if (!validationError.size) {
-            onCommit(agentState.agent);
+            onSave(agentState.agent);
         } else {
             setAgent({...agentState, errors: validationError})
         }
@@ -137,7 +135,7 @@ export const AgentEditForm: React.FC<agentDialogProps> = ({
 
                     <div className="flex items-center mt-6 space-x-4 rtl:space-x-reverse justify-end">
                         <button type="button"
-                                onClick={handleCommit}
+                                onClick={save}
                                 className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800
                                            focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg
                                            text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700

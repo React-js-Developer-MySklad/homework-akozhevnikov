@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode production",
-    "serve": "webpack serve --mode development"
+    "serve": "webpack serve --mode development | json-server --watch src/db.json --port 3000",
+    "back": "json-server --watch src/db.json --port 3000"
   },
   "author": "",
   "license": "ISC",
@@ -39,6 +40,9 @@
     "flowbite": "^2.4.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "@types/axios": "^0.14.0",
+    "axios": "^1.7.5",
+    "json-server": "^1.0.0-beta.2"
   }
 }

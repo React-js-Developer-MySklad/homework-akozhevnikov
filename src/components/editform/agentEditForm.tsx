@@ -4,56 +4,52 @@ import {Agent} from "../../model/Agent";
 import {TextInput} from "../input/textField";
 
 interface AgentDialogProps {
-    data: Agent,
-    onClose: () => void,
-    onSave: (agent: Agent) => void,
+    data: Agent;
+    onClose: () => void;
+    onSave: (agent: Agent) => void;
 }
 
-const INN_REGEX: RegExp = /^\d{11}$/;
-const KPP_REGEX: RegExp = /^\d{9}$/;
+const INN_REGEX = /^\d{11}$/;
+const KPP_REGEX = /^\d{9}$/;
 
-const validate = (values: Agent) => {
+const validate = (values: Agent): Partial<Agent> => {
     const errors: Partial<Agent> = {};
 
-    if (isEmpty(values.name)) {
-        errors.name = 'Обязательное поле';
-    }
-    if (isEmpty(values.inn)) {
-        errors.inn = 'Обязательное поле';
-    }
-    if (isEmpty(values.address)) {
-        errors.address = 'Обязательное поле';
-    }
-    if (isEmpty(values.kpp)) {
-        errors.kpp = 'Обязательное поле';
-    }
+    const requiredFields: (keyof Agent)[] = ["name", "inn", "address", "kpp"];
+    requiredFields.forEach(field => {
+        if (!values[field] || values[field].trim() === "") {
+            errors[field] = "Обязательное поле";
+        }
+    });
 
-    if (values.kpp && !KPP_REGEX.test(values.kpp)) {
-        errors.kpp = 'КПП должен состоять из 9 цифр';
-    }
     if (values.inn && !INN_REGEX.test(values.inn)) {
-        errors.inn = 'ИНН должен состоять из 11 цифр';
+        errors.inn = "ИНН должен состоять из 11 цифр";
+    }
+    if (values.kpp && !KPP_REGEX.test(values.kpp)) {
+        errors.kpp = "КПП должен состоять из 9 цифр";
     }
 
     return errors;
 };
 
-const isEmpty = (val: string): boolean => {
-    return !val || val.match(/^ *$/) !== null;
+interface FieldProps {
+    name: keyof Agent;
+    label: string;
 }
 
-export const AgentEditForm: React.FC<AgentDialogProps> = ({
-                                                              data,
-                                                              onClose,
-                                                              onSave
-                                                          }) => {
+const ValidatedTextField: React.FC<FieldProps> = ({name, label}) => (
+    <Field name={name}>
+        {({input, meta}) => (
+            <TextInput title={label} {...input} error={meta.touched && meta.error}/>
+        )}
+    </Field>
+);
+
+export const AgentEditForm: React.FC<AgentDialogProps> = ({data, onClose, onSave}) => {
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50">
-
             <div className="fixed inset-0 bg-black bg-opacity-50"/>
-
             <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 p-4 w-full max-w-md max-h-full">
-
                 <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                         {data.id ? 'Редактирование контрагента' : 'Новый контрагент'}
@@ -77,30 +73,13 @@ export const AgentEditForm: React.FC<AgentDialogProps> = ({
                         onSubmit={onSave}
                         initialValues={data}
                         validate={validate}
-                        render={({handleSubmit, submitting, pristine}) => (
+                        render={({handleSubmit}) => (
                             <form onSubmit={handleSubmit}>
                                 <div className="grid gap-4 mb-4">
-                                    <Field name="name">
-                                        {({input, meta}) => (
-                                            <TextInput title="Наименование"{...input}
-                                                       error={meta.touched && meta.error}/>
-                                        )}
-                                    </Field>
-                                    <Field name="inn">
-                                        {({input, meta}) => (
-                                            <TextInput title="ИНН"{...input} error={meta.touched && meta.error}/>
-                                        )}
-                                    </Field>
-                                    <Field name="address">
-                                        {({input, meta}) => (
-                                            <TextInput title="Адрес"{...input} error={meta.touched && meta.error}/>
-                                        )}
-                                    </Field>
-                                    <Field name="kpp">
-                                        {({input, meta}) => (
-                                            <TextInput title="КПП"{...input} error={meta.touched && meta.error}/>
-                                        )}
-                                    </Field>
+                                    <ValidatedTextField name="name" label="Наименование"/>
+                                    <ValidatedTextField name="inn" label="ИНН"/>
+                                    <ValidatedTextField name="address" label="Адрес"/>
+                                    <ValidatedTextField name="kpp" label="КПП"/>
                                 </div>
 
                                 <div className="flex items-center mt-6 space-x-4 rtl:space-x-reverse justify-end">
@@ -132,7 +111,6 @@ export const AgentEditForm: React.FC<AgentDialogProps> = ({
                         )}
                     />
                 </div>
-
             </div>
         </div>
     );

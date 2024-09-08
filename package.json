@@ -43,6 +43,8 @@
     "uuid": "^10.0.0",
     "@types/axios": "^0.14.0",
     "axios": "^1.7.5",
-    "json-server": "^1.0.0-beta.2"
+    "json-server": "^1.0.0-beta.2",
+    "final-form": "^4.20.10",
+    "react-final-form": "^6.5.9"
   }
 }

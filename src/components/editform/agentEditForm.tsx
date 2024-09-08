@@ -32,12 +32,7 @@ const validate = (values: Agent): Partial<Agent> => {
     return errors;
 };
 
-interface FieldProps {
-    name: keyof Agent;
-    label: string;
-}
-
-const ValidatedTextField: React.FC<FieldProps> = ({name, label}) => (
+const ValidatedTextField: React.FC<{ name: keyof Agent, label: string }> = ({name, label}) => (
     <Field name={name}>
         {({input, meta}) => (
             <TextInput title={label} {...input} error={meta.touched && meta.error}/>
